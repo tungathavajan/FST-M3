@@ -1,0 +1,27 @@
+version: '3'
+services:
+    postgres:
+        image: postgres
+        environment:
+            - POSTGRES_PASSWORD=postgres_password
+            - POSTGRES_USER=postgres
+            - POSTGRES_DB=simple_blog_api
+    api:
+        depends_on:
+            - postgres
+        image: tungathavajan/simpleblogapi
+        restart: always
+        build:
+            context: .
+            dockerfile: Dockerfile
+        ports:
+            - "3000:3000"
+        volumes:
+            - /app/node_modules
+            - .:/app
+        environment:
+            - POSTGRES_USER=postgres
+            - POSTGRES_HOST=postgres
+            - POSTGRES_DB=simple_blog_api
+            - POSTGRES_PASSWORD=postgres_password
+            - POSTGRES_PORT=5432
